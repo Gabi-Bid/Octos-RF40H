@@ -20,7 +20,7 @@ echo -e "${BOLD}======================================================${NC}"
 echo -e "\n${BLUE}--- System & Kernel ---${NC}"
 uname -a
 echo "SoC: $(cat /proc/cpuinfo | grep 'Hardware' | head -n 1 || echo 'Rockchip RK3326')"
-echo "Loaded DTB: $(cat /proc/device-tree/model 2>/dev/null || echo 'Unknown')"
+echo "Loaded DTB: $(tr -d '\0' < /proc/device-tree/model 2>/dev/null || echo 'Unknown')"
 
 # 2. Display Subsystem
 echo -e "\n${BLUE}--- Display Subsystem ---${NC}"
