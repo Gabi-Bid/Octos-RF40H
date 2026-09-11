@@ -1,0 +1,6 @@
+LABEL ROCKNIX
+  LINUX /KERNEL
+  FDTDIR /
+  FDT /rk3326-xifan-rf40h.dtb
+  FDTOVERLAYS /overlays/mipi-panel.dtbo
+  APPEND boot=${partition_boot} disk=${partition_storage} quiet console=ttyS2,1500000 console=tty0 systemd.debug_shell=ttyS2 uboot.hwid_adc=${hwid_adc}

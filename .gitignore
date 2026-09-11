@@ -1,0 +1,9 @@
+# Build and distribution artifacts
+build/
+dist/
+*.img
+*.iso
+*.tar
+.DS_Store
+*.swp
+*~

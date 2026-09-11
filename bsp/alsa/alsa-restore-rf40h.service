@@ -1,0 +1,12 @@
+[Unit]
+Description=Restore RF40H ALSA Mixer State
+After=sound.target
+Requires=sound.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/alsactl -f /var/lib/alsa/asound.state restore
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
