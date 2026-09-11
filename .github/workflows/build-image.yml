@@ -1,0 +1,50 @@
+name: Build RF40H Linux Image
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            debootstrap \
+            qemu-user-static \
+            parted \
+            dosfstools \
+            e2fsprogs \
+            xz-utils \
+            rsync \
+            udev
+
+      - name: Build Debian ARM64 Image
+        run: |
+          sudo ./scripts/build-image-debian.sh
+
+      - name: Upload Image Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rf40h-debian-bookworm-arm64
+          path: |
+            dist/*.img.xz
+            dist/*.sha256
+          retention-days: 14
+
+      - name: Publish GitHub Release Asset (on tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.img.xz
+            dist/*.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
